@@ -8,6 +8,7 @@ import fs from 'fs';
 import path from 'path';
 import { PartUnion } from '@google/genai';
 import mime from 'mime-types';
+import { EncodingSettings, readFileWithEncodingAsync } from './encodingUtils.js';
 
 // Constants for text file processing
 const DEFAULT_MAX_LINES_TEXT_FILE = 2000;
@@ -188,6 +189,7 @@ export interface ProcessedFileReadResult {
  * @param rootDirectory Absolute path to the project root for relative path display.
  * @param offset Optional offset for text files (0-based line number).
  * @param limit Optional limit for text files (number of lines to read).
+ * @param encodingSettings Optional encoding settings for file reading.
  * @returns ProcessedFileReadResult object.
  */
 export async function processSingleFileContent(
@@ -195,6 +197,7 @@ export async function processSingleFileContent(
   rootDirectory: string,
   offset?: number,
   limit?: number,
+  encodingSettings?: EncodingSettings,
 ): Promise<ProcessedFileReadResult> {
   try {
     if (!fs.existsSync(filePath)) {
@@ -247,14 +250,14 @@ export async function processSingleFileContent(
             returnDisplay: `Skipped large SVG file (>1MB): ${relativePathForDisplay}`,
           };
         }
-        const content = await fs.promises.readFile(filePath, 'utf8');
+        const content = await readFileWithEncodingAsync(filePath, encodingSettings);
         return {
           llmContent: content,
           returnDisplay: `Read SVG as text: ${relativePathForDisplay}`,
         };
       }
       case 'text': {
-        const content = await fs.promises.readFile(filePath, 'utf8');
+        const content = await readFileWithEncodingAsync(filePath, encodingSettings);
         const lines = content.split('\n');
         const originalLineCount = lines.length;
 

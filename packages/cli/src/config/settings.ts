@@ -50,6 +50,15 @@ export interface AccessibilitySettings {
   disableLoadingPhrases?: boolean;
 }
 
+export interface EncodingSettings {
+  // Default encoding for files when extension-specific mapping doesn't exist
+  defaultEncoding?: string;
+  // File extension to encoding mapping
+  extensionMappings?: Record<string, string>;
+  // Whether to attempt automatic encoding detection
+  autoDetectEncoding?: boolean;
+}
+
 export interface Settings {
   theme?: string;
   selectedAuthType?: AuthType;
@@ -75,6 +84,9 @@ export interface Settings {
     respectGitIgnore?: boolean;
     enableRecursiveFileSearch?: boolean;
   };
+
+  // File encoding settings
+  encoding?: EncodingSettings;
 
   // UI setting. Does not display the ANSI-controlled terminal title.
   hideWindowTitle?: boolean;

@@ -7,6 +7,7 @@
 import * as fs from 'fs';
 import * as path from 'path';
 import * as Diff from 'diff';
+import { readFileWithEncoding, writeFileWithEncoding } from '../utils/encodingUtils.js';
 import {
   BaseTool,
   ToolCallConfirmationDetails,
@@ -203,7 +204,7 @@ Expectation for required parameters:
     let error: { display: string; raw: string } | undefined = undefined;
 
     try {
-      currentContent = fs.readFileSync(params.file_path, 'utf8');
+      currentContent = readFileWithEncoding(params.file_path, this.config.getEncodingSettings());
       // Normalize line endings to LF for consistent processing.
       currentContent = currentContent.replace(/\r\n/g, '\n');
       fileExists = true;
@@ -396,7 +397,7 @@ Expectation for required parameters:
 
     try {
       this.ensureParentDirectoriesExist(params.file_path);
-      fs.writeFileSync(params.file_path, editData.newContent, 'utf8');
+      writeFileWithEncoding(params.file_path, editData.newContent, this.config.getEncodingSettings());
 
       let displayResult: ToolResultDisplay;
       if (editData.isNewFile) {
@@ -455,7 +456,7 @@ Expectation for required parameters:
       getFilePath: (params: EditToolParams) => params.file_path,
       getCurrentContent: async (params: EditToolParams): Promise<string> => {
         try {
-          return fs.readFileSync(params.file_path, 'utf8');
+          return readFileWithEncoding(params.file_path, this.config.getEncodingSettings());
         } catch (err) {
           if (!isNodeError(err) || err.code !== 'ENOENT') throw err;
           return '';
@@ -463,7 +464,7 @@ Expectation for required parameters:
       },
       getProposedContent: async (params: EditToolParams): Promise<string> => {
         try {
-          const currentContent = fs.readFileSync(params.file_path, 'utf8');
+          const currentContent = readFileWithEncoding(params.file_path, this.config.getEncodingSettings());
           return this._applyReplacement(
             currentContent,
             params.old_string,

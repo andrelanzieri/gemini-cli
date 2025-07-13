@@ -11,6 +11,7 @@ import {
   ContentGeneratorConfig,
   createContentGeneratorConfig,
 } from '../core/contentGenerator.js';
+import { EncodingSettings } from '../utils/encodingUtils.js';
 import { UserTierId } from '../code_assist/types.js';
 import { ToolRegistry } from '../tools/tool-registry.js';
 import { LSTool } from '../tools/ls.js';
@@ -133,6 +134,7 @@ export interface ConfigParameters {
     respectGitIgnore?: boolean;
     enableRecursiveFileSearch?: boolean;
   };
+  encoding?: EncodingSettings;
   checkpointing?: boolean;
   proxy?: string;
   cwd: string;
@@ -167,6 +169,7 @@ export class Config {
   private approvalMode: ApprovalMode;
   private readonly showMemoryUsage: boolean;
   private readonly accessibility: AccessibilitySettings;
+  private readonly encoding: EncodingSettings;
   private readonly telemetrySettings: TelemetrySettings;
   private readonly usageStatisticsEnabled: boolean;
   private geminiClient!: GeminiClient;
@@ -223,6 +226,7 @@ export class Config {
       enableRecursiveFileSearch:
         params.fileFiltering?.enableRecursiveFileSearch ?? true,
     };
+    this.encoding = params.encoding ?? {};
     this.checkpointing = params.checkpointing ?? false;
     this.proxy = params.proxy;
     this.cwd = params.cwd ?? process.cwd();
@@ -457,6 +461,10 @@ export class Config {
 
   getCheckpointingEnabled(): boolean {
     return this.checkpointing;
+  }
+
+  getEncodingSettings(): EncodingSettings {
+    return this.encoding;
   }
 
   getProxy(): string | undefined {

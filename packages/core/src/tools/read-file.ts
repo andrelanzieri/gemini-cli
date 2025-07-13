@@ -136,6 +136,7 @@ export class ReadFileTool extends BaseTool<ReadFileToolParams, ToolResult> {
       this.rootDirectory,
       params.offset,
       params.limit,
+      this.config.getEncodingSettings(),
     );
 
     if (result.error) {

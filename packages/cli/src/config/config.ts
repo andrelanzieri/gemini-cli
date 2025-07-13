@@ -315,6 +315,8 @@ export async function loadCliConfig(
       enableRecursiveFileSearch:
         settings.fileFiltering?.enableRecursiveFileSearch,
     },
+    // File encoding settings
+    encoding: settings.encoding,
     checkpointing: argv.checkpointing || settings.checkpointing?.enabled,
     proxy:
       process.env.HTTPS_PROXY ||

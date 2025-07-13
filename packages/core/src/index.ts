@@ -33,6 +33,7 @@ export * from './utils/memoryDiscovery.js';
 export * from './utils/gitIgnoreParser.js';
 export * from './utils/editor.js';
 export * from './utils/quotaErrorDetection.js';
+export * from './utils/encodingUtils.js';
 
 // Export services
 export * from './services/fileDiscoveryService.js';

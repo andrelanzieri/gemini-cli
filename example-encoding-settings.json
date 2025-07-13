@@ -1,0 +1,11 @@
+{
+  "encoding": {
+    "defaultEncoding": "utf-8",
+    "extensionMappings": {
+      ".prw": "latin1",
+      ".tlpp": "latin1",
+      ".txt": "utf-8"
+    },
+    "autoDetectEncoding": false
+  }
+}

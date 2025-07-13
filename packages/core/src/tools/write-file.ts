@@ -7,6 +7,7 @@
 import fs from 'fs';
 import path from 'path';
 import * as Diff from 'diff';
+import { readFileWithEncoding, writeFileWithEncoding } from '../utils/encodingUtils.js';
 import { Config, ApprovalMode } from '../config/config.js';
 import {
   BaseTool,
@@ -257,7 +258,7 @@ export class WriteFileTool
         fs.mkdirSync(dirName, { recursive: true });
       }
 
-      fs.writeFileSync(params.file_path, fileContent, 'utf8');
+      writeFileWithEncoding(params.file_path, fileContent, this.config.getEncodingSettings());
 
       // Generate diff for display result
       const fileName = path.basename(params.file_path);
@@ -334,7 +335,7 @@ export class WriteFileTool
     let correctedContent = proposedContent;
 
     try {
-      originalContent = fs.readFileSync(filePath, 'utf8');
+      originalContent = readFileWithEncoding(filePath, this.config.getEncodingSettings());
       fileExists = true; // File exists and was read
     } catch (err) {
       if (isNodeError(err) && err.code === 'ENOENT') {

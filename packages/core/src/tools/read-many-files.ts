@@ -379,6 +379,9 @@ Use this tool when the user's query implies needing the content of several files
       const fileReadResult = await processSingleFileContent(
         filePath,
         toolBaseDir,
+        undefined,
+        undefined,
+        this.config.getEncodingSettings(),
       );
 
       if (fileReadResult.error) {
