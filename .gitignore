@@ -39,3 +39,4 @@ packages/*/coverage/
 packages/cli/src/generated/
 .integration-tests/
 CLAUDE.md
+packages/vscode-ide-companion/*.vsix
